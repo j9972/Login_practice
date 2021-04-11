@@ -4,8 +4,17 @@ import Axios from 'axios';
 
 const App = () => { 
 
-    const [usernameReg, setUsernameReg] = useState('')
-    const [passwordReg, setPasswordReg] = useState('')
+    const [usernameReg, setUsernameReg] = useState('');
+    const [passwordReg, setPasswordReg] = useState('');
+
+    const register = () => {
+        Axios.post('http://localhost:3001/register', {
+            username: usernameReg, 
+            password: passwordReg
+        }).then((res) => {
+            console.log(res);
+        });
+    };
 
     return (
         <div className="App">
@@ -25,7 +34,7 @@ const App = () => {
                         setPasswordReg(e.target.value);
                     }}
                 />
-                <button> Register </button>
+                <button onClick={register}> Register </button>
             </div>
             <div className="login">
                 <h1>Login</h1>
