@@ -13,6 +13,7 @@ const App = () => {
             password: passwordReg
         }).then((res) => {
             console.log(res);
+            console.log("success");
         });
     };
 
