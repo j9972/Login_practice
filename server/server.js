@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-    user: "loginpedro",
+    user: "pedrologin",
     host: "localhost",
     password: "password",
     database: "LogionSystem",
@@ -24,8 +24,10 @@ app.post('/register', (req,res) => {
     (err,result) => {
         if(err) {
             console.log(err);
+            console.log('a_err');
         } else {
             res.send(result);
+            console.log('a_success_a');
         }
     });
 })
