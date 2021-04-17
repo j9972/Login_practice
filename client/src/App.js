@@ -8,8 +8,8 @@ const App = () => {
     const [passwordReg, setPasswordReg] = useState('');
 
     const register = () => {
-        Axios.post('http://localhost:3001/register', { // 여기
-            username: usernameReg, 
+        Axios.post('http://localhost:3001/register', { 
+            username: usernameReg,  
             password: passwordReg,
         }).then((res) => {
             console.log(res);
