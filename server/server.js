@@ -63,6 +63,27 @@ app.post('/register', (req,res) => {
     });
 });
 
+const verifyJWT = (req,res,next) => {
+    const token = req.headers["x-access-token"]
+
+    if(!token) {
+        res.send("yo we need a token, plz give it to us next time");
+    } else {
+        jwt.verify(token, "jwtSecret", (err, decoded) => {
+            if(err) {
+                res.json({auth:false, message: "u failed to authenticate"});
+            } else {
+                req.userId = decoded.id;
+                next();
+            }
+        });
+    }
+}
+
+app.get('/isUserAuth', verifyJWT ,(req,res) => {
+    res.send("yo, u r authenticated Congrats");
+})
+
 app.get('/login' , (req,res) => {
     if(req.session.user) {
         res.send({loggedIn: true, user: req.session.user});
@@ -92,11 +113,11 @@ app.post('/login', (req,res) => {
 
                     res.json({auth:true, token:token, result: result});
                 } else {
-                    res.send({message: " Wrong username/password combination! "})
+                    res.json({auth:false, message: "wrong username/password combination"});
                 }
             })
         } else {
-            res.send({message: " User doenst exist! "})
+            res.json({auth:false, message: "no user exists"});
         }       
     });
 });

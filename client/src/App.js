@@ -10,7 +10,7 @@ const App = () => {
     const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState('');
 
-    const [loginStatus, setLoginStatus] = useState('');
+    const [loginStatus, setLoginStatus] = useState(false);
 
     Axios.defaults.withCredentials = true;
 
@@ -29,14 +29,24 @@ const App = () => {
             username: username,  
             password: password,
         }).then((res) => {
-            if(!res.data.message) {
-                setLoginStatus(res.data.message)
+            if(!res.data.auth) {
+                setLoginStatus(false);
             } else {
-                setLoginStatus(res.data[0].username + '님 환영합니다');
+                localStorage.setItem("token", res.data.token);
+                setLoginStatus(true);
             }
-            console.log(res.data);
         });
     };
+
+    const userAuthenticated = () => {
+        Axios.get("http://localhost:3001/isUserAuth", {
+            headers: {
+                "x-access-token": localStorage.getItem("token"),
+            },
+        }).then((res) => {
+            console.log(res);
+        })
+    }
 
     useEffect(() => {
         Axios.get("http://localhost:3001/login").then((res) => {
@@ -79,7 +89,7 @@ const App = () => {
                 <button onClick={login}> Login </button>
             </div>
 
-            <h1>{loginStatus}</h1>
+            {loginStatus && <button onClick={userAuthenticated}>Check if Authenticated</button>}
         </div>
     )
 };
