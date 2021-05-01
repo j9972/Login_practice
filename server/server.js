@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require('mysql');
 const cors = require('cors');
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
 
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(cors());
 const db = mysql.createConnection({
     user: "root",
     host: "localhost",
-    password: "jh485200@@",
+    password: "jh485200@@",  
     database: "LoginSystem",
 });
 
@@ -45,7 +46,7 @@ app.post('/login', (req,res) => {
         if(result.length > 0) {
             res.send(result);
         } else {
-            res.send({message: " wrong username/password combination! "})
+            res.send({message: " Wrong username/password combination! "})
         }       
     });
 });
